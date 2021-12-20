@@ -14,20 +14,30 @@ class TokensStub(object):
         Args:
             channel: A grpc.Channel.
         """
+        self.ldapLogin = channel.unary_unary(
+                '/tokens.Tokens/ldapLogin',
+                request_serializer=token__pb2.loginRequest.SerializeToString,
+                response_deserializer=token__pb2.Response.FromString,
+                )
+        self.certLogin = channel.unary_unary(
+                '/tokens.Tokens/certLogin',
+                request_serializer=token__pb2.certRequest.SerializeToString,
+                response_deserializer=token__pb2.Response.FromString,
+                )
         self.lookupToken = channel.unary_unary(
                 '/tokens.Tokens/lookupToken',
                 request_serializer=token__pb2.lookuptokenRequest.SerializeToString,
-                response_deserializer=token__pb2.tokenResponse.FromString,
+                response_deserializer=token__pb2.Response.FromString,
                 )
         self.createToken = channel.unary_unary(
                 '/tokens.Tokens/createToken',
                 request_serializer=token__pb2.createtokenRequest.SerializeToString,
-                response_deserializer=token__pb2.tokenResponse.FromString,
+                response_deserializer=token__pb2.Response.FromString,
                 )
         self.renewToken = channel.unary_unary(
                 '/tokens.Tokens/renewToken',
                 request_serializer=token__pb2.renewtokenRequest.SerializeToString,
-                response_deserializer=token__pb2.tokenResponse.FromString,
+                response_deserializer=token__pb2.Response.FromString,
                 )
         self.revokeToken = channel.unary_unary(
                 '/tokens.Tokens/revokeToken',
@@ -38,6 +48,18 @@ class TokensStub(object):
 
 class TokensServicer(object):
     """Missing associated documentation comment in .proto file."""
+
+    def ldapLogin(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def certLogin(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
 
     def lookupToken(self, request, context):
         """Missing associated documentation comment in .proto file."""
@@ -66,20 +88,30 @@ class TokensServicer(object):
 
 def add_TokensServicer_to_server(servicer, server):
     rpc_method_handlers = {
+            'ldapLogin': grpc.unary_unary_rpc_method_handler(
+                    servicer.ldapLogin,
+                    request_deserializer=token__pb2.loginRequest.FromString,
+                    response_serializer=token__pb2.Response.SerializeToString,
+            ),
+            'certLogin': grpc.unary_unary_rpc_method_handler(
+                    servicer.certLogin,
+                    request_deserializer=token__pb2.certRequest.FromString,
+                    response_serializer=token__pb2.Response.SerializeToString,
+            ),
             'lookupToken': grpc.unary_unary_rpc_method_handler(
                     servicer.lookupToken,
                     request_deserializer=token__pb2.lookuptokenRequest.FromString,
-                    response_serializer=token__pb2.tokenResponse.SerializeToString,
+                    response_serializer=token__pb2.Response.SerializeToString,
             ),
             'createToken': grpc.unary_unary_rpc_method_handler(
                     servicer.createToken,
                     request_deserializer=token__pb2.createtokenRequest.FromString,
-                    response_serializer=token__pb2.tokenResponse.SerializeToString,
+                    response_serializer=token__pb2.Response.SerializeToString,
             ),
             'renewToken': grpc.unary_unary_rpc_method_handler(
                     servicer.renewToken,
                     request_deserializer=token__pb2.renewtokenRequest.FromString,
-                    response_serializer=token__pb2.tokenResponse.SerializeToString,
+                    response_serializer=token__pb2.Response.SerializeToString,
             ),
             'revokeToken': grpc.unary_unary_rpc_method_handler(
                     servicer.revokeToken,
@@ -97,6 +129,40 @@ class Tokens(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
+    def ldapLogin(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/tokens.Tokens/ldapLogin',
+            token__pb2.loginRequest.SerializeToString,
+            token__pb2.Response.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def certLogin(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/tokens.Tokens/certLogin',
+            token__pb2.certRequest.SerializeToString,
+            token__pb2.Response.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
     def lookupToken(request,
             target,
             options=(),
@@ -109,7 +175,7 @@ class Tokens(object):
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/tokens.Tokens/lookupToken',
             token__pb2.lookuptokenRequest.SerializeToString,
-            token__pb2.tokenResponse.FromString,
+            token__pb2.Response.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -126,7 +192,7 @@ class Tokens(object):
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/tokens.Tokens/createToken',
             token__pb2.createtokenRequest.SerializeToString,
-            token__pb2.tokenResponse.FromString,
+            token__pb2.Response.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -143,7 +209,7 @@ class Tokens(object):
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/tokens.Tokens/renewToken',
             token__pb2.renewtokenRequest.SerializeToString,
-            token__pb2.tokenResponse.FromString,
+            token__pb2.Response.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
